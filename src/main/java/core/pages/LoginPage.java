@@ -23,6 +23,8 @@ public class LoginPage extends BasePage {
 
     private SelenideElement errorMessage = $x("//div[contains(@class,'LoginForm')]//span[contains(@class,'error')]");
 
+    private SelenideElement goToRecoveryButton = $x("//span[text()='Восстановить']");
+
     //public LoginPage
     {
         verifyPageElements();
@@ -52,10 +54,22 @@ public class LoginPage extends BasePage {
 
     @Step("Входим на сайт с логином: {username} и {password}")
     public void login(String username, String password) {
+        usernameField.shouldBe(visible).click();
         usernameField.shouldBe(visible).setValue(username);
+        passwordField.shouldBe(visible).click();
         passwordField.shouldBe(visible).setValue(password);
         loginButton.shouldBe(visible).click();
 
+    }
+
+    @Step("Нажимаем кнопку Войти")
+    public void clickLogin() {
+        loginButton.shouldBe(visible).click();
+    }
+
+    @Step("Нажимаем восстановить пароль")
+    public void goToRecovery() {
+        goToRecoveryButton.shouldBe(visible).click();
     }
 
     @Step("Переходим на страницу восстановления пароля")
