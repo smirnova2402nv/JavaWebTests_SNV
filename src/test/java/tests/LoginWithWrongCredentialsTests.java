@@ -3,12 +3,14 @@ package tests;
 import core.base.BaseTest;
 import core.pages.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("skip_allure")
 public class LoginWithWrongCredentialsTests extends BaseTest {
     private static LoginPage loginPage;
     @BeforeEach
