@@ -4,18 +4,31 @@ import com.codeborne.selenide.SelenideElement;
 import core.base.BasePage;
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class AnonymRecoveryPage extends BasePage {
 
     private SelenideElement recoveryByFhoneButton = $("[data-l='t,phone']");
     private SelenideElement recoveryByEmailButton = $("[data-l='t,email']");
-    private SelenideElement recoveryToSupportButton = $("[tsid='support-link_link_5998d4']");
+    private SelenideElement recoveryToSupportButton = $(".support-link_items");
 
-    {
+
+    private SelenideElement supportChatVisible= $(".chat__n9ga2");
+    private SelenideElement supportChatClose = $("[name='ico_close_16']");
+    private SelenideElement supportChatCloseConfirm = $x("//span[text()='Да']");
+
+
+    public AnonymRecoveryPage() {
+        // Ждем загрузки страницы
+        $("body").shouldBe(visible, Duration.ofSeconds(10));
         verifyPageElements();
     }
+
+
 
 
     @Step("Проверяем видимость всех элементов на странице восстановления пароля")
@@ -23,6 +36,21 @@ public class AnonymRecoveryPage extends BasePage {
         recoveryByFhoneButton.shouldBe(visible);
         recoveryByEmailButton.shouldBe(visible);
         recoveryToSupportButton.shouldBe(visible);
+    }
+
+    @Step("проверить, что открылось окно для общения со службой поддержки")
+    public void supportChatVisible() {
+        supportChatVisible.shouldBe(visible);
+    }
+
+    @Step("нажать на крестик для закрытия чата")
+    public void supportChatClose() {
+        supportChatClose.shouldBe(visible).click();
+    }
+
+    @Step("подтвердить закрытие чата (Ващ вопрос точно решен?) нажатием на кнопку \"да\"")
+    public void supportChatCloseConfirm() {
+        supportChatCloseConfirm.shouldBe(visible).click();
     }
 
     @Step("Нажимаем кнопку восстановления через телефон")

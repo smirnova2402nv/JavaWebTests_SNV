@@ -21,7 +21,7 @@ public class AnonymRecoveryEmailLinkPage extends BasePage {
         getСodeButton.shouldBe(visible);
     }
 
-    @Step("Нажимаем на кнопку Получть код")
+    @Step("Нажимаем на кнопку Получить код")
     public void goToRecoveryByPhone() {
         getСodeButton.shouldBe(visible).click();
     }

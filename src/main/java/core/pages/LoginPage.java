@@ -4,7 +4,9 @@ import com.codeborne.selenide.SelenideElement;
 import core.base.BasePage;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.visible;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -25,10 +27,20 @@ public class LoginPage extends BasePage {
 
     private SelenideElement goToRecoveryButton = $x("//span[text()='Восстановить']");
 
+    private SelenideElement goToQrCodeButton = $x("//span[contains(text(), 'Войти по QR-коду')]");
+
+    private SelenideElement searchGroups = $("[name='st.query']");
+
+    private SelenideElement selectTester = $x("//*[contains(@class, 'toolbar_search_suggest-list')]//*[text()='Тестировщик']");
+
+
     //public LoginPage
-    {
+    public LoginPage() {
+        // Ждем загрузки страницы
+        $("body").shouldBe(visible, Duration.ofSeconds(10));
         verifyPageElements();
     }
+
 
     @Step("Проверяем видимость всех элементов страницы")
     private void verifyPageElements() {
@@ -72,9 +84,23 @@ public class LoginPage extends BasePage {
         goToRecoveryButton.shouldBe(visible).click();
     }
 
-    @Step("Переходим на страницу восстановления пароля")
+    @Step("\"нажать \\\"обратиться в службу поддержки\\\" \"")
     public void openForgotPasswordPage() {
         forgotPasswordLink.shouldBe(visible).click();
+    }
+
+    @Step("Переходим во вкладку QR-код")
+    public void goToQrCodeButton() {
+        goToQrCodeButton.shouldBe(visible, clickable).click();
+    }
+    @Step("вверху в поле \"поиск\" ввести \"Тестировщик\"")
+    public void shouldRedirectToGroups() {
+        searchGroups.sendKeys("Тестировщик");
+    }
+    @Step("из выпадающего списка выбрать \"тестировщик\"")
+    public ListGroupsPage selectTester() {
+        selectTester.shouldBe(visible).click();
+        return new ListGroupsPage();
     }
 
     @Step("Переходим на страницу регистрации")
