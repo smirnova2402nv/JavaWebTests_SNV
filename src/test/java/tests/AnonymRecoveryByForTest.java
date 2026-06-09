@@ -11,10 +11,14 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("skip_allure")
 public class AnonymRecoveryByForTest extends BaseTest {
     private static LoginPage loginPage;
     private static AnonymRecoveryPage anonymRecoveryPage;
@@ -66,6 +70,17 @@ public class AnonymRecoveryByForTest extends BaseTest {
         anonymRecoveryTest();
         anonymRecoveryPage.goToRecoveryByPhone();
         anonymRecoveryPhoneLinkPage = new AnonymRecoveryPhoneLinkPage();
+
+        String countryCode = anonymRecoveryPhoneLinkPage.selectCountryByName("Перу");
+        assertEquals("+51", countryCode, "Код страны не совпадает с ожидаемым");
+        anonymRecoveryPhoneLinkPage.goToRecoveryByPhone();
+        //Проверка наличия сообщения об ошибке
+        assertTrue(anonymRecoveryPhoneLinkPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
+
+        //Проверка текста сообщения об ошибке
+        String expectedErrorMessage = "Неправильный номер телефона.";
+        String actualErrorMessage = anonymRecoveryPhoneLinkPage.getErrorMessageText();
+        assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
 
 }
