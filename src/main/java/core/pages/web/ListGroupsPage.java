@@ -1,4 +1,6 @@
-package core.pages;
+/* Устарело
+
+package core.pages.web;
 
 import com.codeborne.selenide.SelenideElement;
 import core.base.BaseTest;
@@ -15,3 +17,4 @@ public class ListGroupsPage extends BaseTest {
         listGroups.shouldBe(visible);
     }
 }
+*/

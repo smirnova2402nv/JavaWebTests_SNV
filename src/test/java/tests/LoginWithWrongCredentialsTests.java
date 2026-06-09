@@ -1,7 +1,7 @@
 package tests;
 
 import core.base.BaseTest;
-import core.pages.LoginPage;
+import core.pages.web.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class LoginWithWrongCredentialsTests extends BaseTest {
         assertTrue(loginPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
 
         //Проверка текста сообщения об ошибке
-        String expectedErrorMessage = "Неправильно указан логин и/или пароль";
+        String expectedErrorMessage = "Пользователь с таким телефоном, почтой или логином не найден. Проверьте данные и попробуйте снова.";
         String actualErrorMessage = loginPage.getErrorMessageText();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
@@ -44,7 +44,7 @@ public class LoginWithWrongCredentialsTests extends BaseTest {
         assertTrue(loginPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
 
         //Проверка текста сообщения об ошибке
-        String expectedErrorMessage = "Введите логин";
+        String expectedErrorMessage = "Введите телефон, email или логин и пароль.";
         String actualErrorMessage = loginPage.getErrorMessageText();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
@@ -59,7 +59,7 @@ public class LoginWithWrongCredentialsTests extends BaseTest {
         assertTrue(loginPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
 
         //Проверка текста сообщения об ошибке
-        String expectedErrorMessage = "Введите пароль";
+        String expectedErrorMessage = "Введите телефон, email или логин и пароль.";
         String actualErrorMessage = loginPage.getErrorMessageText();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
