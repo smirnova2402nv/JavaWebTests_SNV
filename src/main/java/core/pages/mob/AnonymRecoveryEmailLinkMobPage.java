@@ -1,15 +1,15 @@
-package core.pages;
+package core.pages.web;
 
 import com.codeborne.selenide.SelenideElement;
-import core.base.BasePage;
+import core.base.MobileBaseTest;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class AnonymRecoveryEmailLinkPage extends BasePage {
-    private SelenideElement emailField = $("[id='field_email']");
-    private SelenideElement getСodeButton = $("[data-l='t,submit']");
+public class AnonymRecoveryEmailLinkMobPage extends MobileBaseTest {
+    private SelenideElement emailField = $("[name='email-input']");
+    private SelenideElement getСodeButton = $("[name='email-submit-btn']");
 
     {
         verifyPageElements();

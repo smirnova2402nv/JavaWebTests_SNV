@@ -1,5 +1,6 @@
-package core.pages;
+package core.pages.web;
 
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import core.base.BasePage;
 import io.qameta.allure.Step;
@@ -7,51 +8,40 @@ import io.qameta.allure.Step;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class LoginPage extends BasePage {
 
-    private SelenideElement usernameField = $("[name='st.email']");
-    private SelenideElement passwordField = $("[name='st.password']");
-    private SelenideElement loginButton = $x("//span[text()='Войти']");
-    private SelenideElement forgotPasswordLink = $x("//button[@aria-label='Не получается войти?']");
-    private SelenideElement registrationButton = $x("//span[text()='Зарегистрироваться']");
+    private SelenideElement acceptCookies = $("[name='cookie-accept-btn']");
+    private SelenideElement usernameField = $("[name='login-phone-email']");
+    private SelenideElement passwordField = $("[name='login-password']");
+    private SelenideElement loginButton = $("[name='login-submit-btn']");
 
-
+    private SelenideElement forgotPasswordLink = $("[name='forgot-password-link']");
+    private SelenideElement registrationButton = $("[name='hero-register-btn']");
+/*Устарело
     private SelenideElement vkButton = $("[data-l='t,vkc']");
     private SelenideElement yandexButton = $("[data-l='t,yandex']");
     private SelenideElement mailRuButton = $("[data-l='t,mailru']");
+*/
+    private SelenideElement errorMessage = $("[name='login-error']");
+   // private SelenideElement goToRecoveryButton = $("[name='forgot-password-link']");//дубль
+    private SelenideElement goToQrCodeButton = $("[name='tab-qr']");
+    private SelenideElement searchGroups = $("[name='search-input']");
+   // private SelenideElement selectTester = $x("//*[contains(@class, 'toolbar_search_suggest-list')]//*[text()='Тестировщик']");
+    private SelenideElement goToRecoveryButton = $("[name='lockout-recover-btn']");
 
-    private SelenideElement errorMessage = $x("//div[contains(@class,'LoginForm')]//span[contains(@class,'error')]");
-
-    private SelenideElement goToRecoveryButton = $x("//span[text()='Восстановить']");
-
-    private SelenideElement goToQrCodeButton = $x("//span[contains(text(), 'Войти по QR-коду')]");
-
-    private SelenideElement searchGroups = $("[name='st.query']");
-
-    private SelenideElement selectTester = $x("//*[contains(@class, 'toolbar_search_suggest-list')]//*[text()='Тестировщик']");
-
-
-    //public LoginPage
     public LoginPage() {
-        // Ждем загрузки страницы
         $("body").shouldBe(visible, Duration.ofSeconds(10));
-        verifyPageElements();
     }
 
-
     @Step("Проверяем видимость всех элементов страницы")
-    private void verifyPageElements() {
+    public void verifyPageElements() {
         usernameField.shouldBe(visible);
         passwordField.shouldBe(visible);
         loginButton.shouldBe(visible);
         forgotPasswordLink.shouldBe(visible);
         registrationButton.shouldBe(visible);
-        vkButton.shouldBe(visible);
-        yandexButton.shouldBe(visible);
-        mailRuButton.shouldBe(visible);
     }
 
     @Step("Проверяем видимость сообщения об ошибке входа")
@@ -67,16 +57,21 @@ public class LoginPage extends BasePage {
     @Step("Входим на сайт с логином: {username} и {password}")
     public void login(String username, String password) {
         usernameField.shouldBe(visible).click();
-        usernameField.shouldBe(visible).setValue(username);
-        passwordField.shouldBe(visible).click();
-        passwordField.shouldBe(visible).setValue(password);
-        loginButton.shouldBe(visible).click();
+        usernameField.setValue(username);
 
+        passwordField.shouldBe(visible).click();
+        passwordField.setValue(password);
+
+        clickLogin();
     }
 
     @Step("Нажимаем кнопку Войти")
     public void clickLogin() {
-        loginButton.shouldBe(visible).click();
+        loginButton
+                .shouldBe(visible, Duration.ofSeconds(10))
+                .shouldBe(enabled, Duration.ofSeconds(20))
+                .shouldNotHave(cssClass("vkuiButton__loading"), Duration.ofSeconds(20))
+                .click();
     }
 
     @Step("Нажимаем восстановить пароль")
@@ -84,7 +79,7 @@ public class LoginPage extends BasePage {
         goToRecoveryButton.shouldBe(visible).click();
     }
 
-    @Step("\"нажать \\\"обратиться в службу поддержки\\\" \"")
+    @Step("Нажать обратиться в службу поддержки")
     public void openForgotPasswordPage() {
         forgotPasswordLink.shouldBe(visible).click();
     }
@@ -93,34 +88,20 @@ public class LoginPage extends BasePage {
     public void goToQrCodeButton() {
         goToQrCodeButton.shouldBe(visible, clickable).click();
     }
-    @Step("вверху в поле \"поиск\" ввести \"Тестировщик\"")
+
+    @Step("Вверху в поле поиск ввести Тестировщик")
     public void shouldRedirectToGroups() {
         searchGroups.sendKeys("Тестировщик");
     }
-    @Step("из выпадающего списка выбрать \"тестировщик\"")
+/* устарело
+    @Step("Из выпадающего списка выбрать Тестировщик")
     public ListGroupsPage selectTester() {
         selectTester.shouldBe(visible).click();
         return new ListGroupsPage();
     }
-
+*/
     @Step("Переходим на страницу регистрации")
     public void openRegistrationPage() {
         registrationButton.shouldBe(visible).click();
     }
-/*
-    @Step("Входим на сайт через VK")
-    public void loginWithVK() {
-        vkButton.shouldBe(visible).click();
-    }
-
-    @Step("Входим на сайт через Mail.ru")
-    public void loginWithMailRu() {
-        mailRuButton.shouldBe(visible).click();
-    }
-
-    @Step("Входим на сайт через Yandex")
-    public void loginWithYandex() {
-        yandexButton.shouldBe(visible).click();
-    }
-*/
 }

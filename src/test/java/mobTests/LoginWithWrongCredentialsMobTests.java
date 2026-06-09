@@ -1,6 +1,8 @@
 package tests;
 
 import core.base.BaseTest;
+import core.base.MobileBaseTest;
+import core.pages.web.LoginMobPage;
 import core.pages.web.LoginPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -11,26 +13,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("skip_allure")
-public class LoginWithWrongCredentialsTests extends BaseTest {
-    private static LoginPage loginPage;
+public class LoginWithWrongCredentialsMobTests extends MobileBaseTest {
+    private static LoginMobPage loginMobPage;
     @BeforeEach
     public void prepare() {
         open(getBaseUrl());
-        loginPage = new LoginPage();
+        loginMobPage = new LoginMobPage();
     }
 
     @Test
     public void loginTest() {
 
         //Попытка входа с некорректными данными
-        loginPage.login("incorrectUser","incorrectPassword");
+        loginMobPage.login("incorrectUser","incorrectPassword");
 
         //Проверка наличия сообщения об ошибке
-        assertTrue(loginPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
+        assertTrue(loginMobPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
 
         //Проверка текста сообщения об ошибке
         String expectedErrorMessage = "Пользователь с таким телефоном, почтой или логином не найден. Проверьте данные и попробуйте снова.";
-        String actualErrorMessage = loginPage.getErrorMessageText();
+        String actualErrorMessage = loginMobPage.getErrorMessageText();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
 
@@ -38,14 +40,14 @@ public class LoginWithWrongCredentialsTests extends BaseTest {
     public void loginTestNotUsername() {
 
         //Попытка входа с некорректными данными
-        loginPage.login("","incorrectPassword");
+        loginMobPage.login("","incorrectPassword");
 
         //Проверка наличия сообщения об ошибке
-        assertTrue(loginPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
+        assertTrue(loginMobPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
 
         //Проверка текста сообщения об ошибке
         String expectedErrorMessage = "Введите телефон, email или логин и пароль.";
-        String actualErrorMessage = loginPage.getErrorMessageText();
+        String actualErrorMessage = loginMobPage.getErrorMessageText();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
 
@@ -53,14 +55,14 @@ public class LoginWithWrongCredentialsTests extends BaseTest {
     public void loginTestNotPassword() {
 
         //Попытка входа с некорректными данными
-        loginPage.login("incorrectUser","");
+        loginMobPage.login("incorrectUser","");
 
         //Проверка наличия сообщения об ошибке
-        assertTrue(loginPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
+        assertTrue(loginMobPage.isErrorMessageVisible(), "Сообщение об ошибке входа не отображается");
 
         //Проверка текста сообщения об ошибке
         String expectedErrorMessage = "Введите телефон, email или логин и пароль.";
-        String actualErrorMessage = loginPage.getErrorMessageText();
+        String actualErrorMessage = loginMobPage.getErrorMessageText();
         assertEquals(expectedErrorMessage, actualErrorMessage, "Текст сообщения об ошибке не совпадает");
     }
 
